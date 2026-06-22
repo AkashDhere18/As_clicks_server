@@ -16,6 +16,8 @@ app.use(
 
 app.use('/api/gallery', require("./Routes/galleryRoutes"));
 
+app.use('/api/contact', require("./Controllers/contactController"));
+
 app.listen(port,()=>{
     console.log(`server running on port ${port}`)
 })
