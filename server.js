@@ -8,15 +8,25 @@ const app = express()
 
 app.use(express.json())
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://as-clicks.vercel.app",
+];
+
 app.use(
-    cors({
-        origin:[
-            "http://localhost:5173",
-            process.env.FRONTEND_URL,
-        
-        ],
-    })
-)
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (Postman, mobile apps, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 app.use('/api/gallery', require("./Routes/galleryRoutes"));
 
