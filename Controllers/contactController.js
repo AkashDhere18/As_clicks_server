@@ -7,23 +7,20 @@ const sendContactMail = async (req, res) => {
         const { name, email, contact, event, message } = req.body;
 
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: "smtp-relay.brevo.com",
             port: 587,
             secure: false,
             auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                user: process.env.BREVO_LOGIN,
+                pass: process.env.BREVO_SMTP_KEY,
             },
-            connectionTimeout: 30000,
-            greetingTimeout: 30000,
-            socketTimeout: 30000,
         })
 
         await transporter.verify();
-        console.log("SMTP Connected Successfully");
+        console.log("Brevo SMTP Connected Successfully");
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: `"Ashish Swami Photo Films" <${process.env.EMAIL_USER}>`,
 
             to: process.env.EMAIL_USER,
 
@@ -45,7 +42,7 @@ const sendContactMail = async (req, res) => {
         });
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: `"Ashish Swami Photo Films" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: "Thank You for Contacting Us",
             html: `
